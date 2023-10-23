@@ -3,7 +3,7 @@
 
 #include <check.h>
 
-#include "s21_calc.h"
+#include "SmartCalc_v1.0.h"
 
 Suite *suite_s21_calc_notation(void);
 

@@ -2,6 +2,35 @@
 
 //добавить недостающие проверки валидности
 
+
+double calculate_y (char *string, double x) {
+    double y = 0;
+
+
+    int new_count = 0;
+    char new_string[256] = {'\0'};
+    char tmp[256];
+    sprintf(tmp, "%lf", x);
+
+
+    for (int i = 0; i < strlen(string); i++) {
+        if (string[i] == 'x') {
+            for (int tmp_count = 0; tmp_count < strlen(tmp); tmp_count++) {
+                new_string[new_count] = tmp[tmp_count];
+                new_count++;
+            }
+        }
+        else {
+            new_string[new_count] = string[i];
+            new_count++;
+        }
+    }
+
+    y = simple_calculation(new_string);
+    return y;
+}
+
+
 double simple_calculation (char *string) {
     double result = 0;
 
@@ -77,11 +106,9 @@ void set_priority (lexeme *value) {
 int make_lexeme_array (char *string, lexeme *root) {
     
     lexeme *last_node = root;
-    //printf("OK\n");
 
     char previous_char = '\0';
     for (int i = 0; i < strlen(string); i++) {
-        printf("i = %d\n", i);
 
         //if digit
         if (string[i] >= '0' && string[i] <= '9') {
@@ -90,7 +117,6 @@ int make_lexeme_array (char *string, lexeme *root) {
             int flag_point = 0;
     
             while (((string[i] >= '0' && string[i] <= '9') || string[i] == '.') && i<256) {
-                //printf("OK\n");
                 if (string[i] == '.') {
                     if (flag_point == 1) return ERROR_POINT;
                     flag_point = 1;
@@ -205,10 +231,10 @@ int make_lexeme_array (char *string, lexeme *root) {
 }
 
 void print_node_array(const lexeme *root) {
-    while (root) {
-        printf(" type = %d , priority = %d , value = %lf\n", root->type, root->priority, root->value);
-        root = root->next;
-    }
+//    while (root) {
+//        printf(" type = %d , priority = %d , value = %lf\n", root->type, root->priority, root->value);
+//        root = root->next;
+//    }
 }
 
 // Принцип работы алгоритма Дейкстра:
@@ -232,29 +258,29 @@ int count = 0;
 do {
 
 count++;
-printf("\n\ncount = %d\n", count);
+//printf("\n\ncount = %d\n", count);
 
     lexeme *curent_infix = copy_one_node(root_infix);
-    printf("Curent_infix\n type = %d , priority = %d , value = %lf, next = %p\n", curent_infix->type, curent_infix->priority, curent_infix->value, curent_infix->next);
+    //printf("Curent_infix\n type = %d , priority = %d , value = %lf, next = %p\n", curent_infix->type, curent_infix->priority, curent_infix->value, curent_infix->next);
 
     //если число или x, то кладем в результат 
     if (curent_infix->type == NUMBER || curent_infix->type == X) {
-        printf("NOMBER OR X\n");
+        //printf("NOMBER OR X\n");
         push_in_postfix(&curent_postfix, &curent_infix);
     }
     //если оператор, то заносим его в вершину стека 
     else if (curent_infix->type > 4 ) {
-        printf("OPERATOR OR OPEN\n");
+        //printf("OPERATOR OR OPEN\n");
         //выталкиваем из стека в результат все опереторы, имеющие приоритет выше или равный нашему
         while (stack != NULL && stack->type > 4 && stack->priority >= curent_infix->priority) {
-            printf("выталкиваем\n");
+            //printf("выталкиваем\n");
             lexeme *tmp = pop_from_stack(&stack);
             push_in_postfix(&curent_postfix, &tmp);
         }
         //кладем оператор в стек
         push_in_stack(&stack, &curent_infix);
 
-        printf("Stack next = %p\n", stack->next);
+        //printf("Stack next = %p\n", stack->next);
     }
 
     //если открывающая скобка?, просто кладем в стек ее
@@ -275,10 +301,10 @@ printf("\n\ncount = %d\n", count);
     //двигаем инфикс на следующую лексему
     root_infix = root_infix->next;
 
-    printf("stack in count %d\n", count);
-    print_node_array(stack);
-    printf("result in count %d\n", count);
-    print_node_array(root_postfix);
+    //printf("stack in count %d\n", count);
+    //print_node_array(stack);
+    ///printf("result in count %d\n", count);
+   // print_node_array(root_postfix);
 
 } while (root_infix->next != NULL);
 
@@ -361,7 +387,7 @@ double from_postfix_to_result (lexeme *postfix) {
             push_in_stack(&stack, &res);
 
             result = res->value;
-            printf("tmp result = %lf\n", result);
+            ///printf("tmp result = %lf\n", result);
 
         }
 
@@ -378,7 +404,7 @@ double from_postfix_to_result (lexeme *postfix) {
             push_in_stack(&stack, &res);
 
             result = res->value;
-            printf("tmp result = %lf\n", result);
+            //printf("tmp result = %lf\n", result);
         }
     
         postfix = postfix->next;
@@ -397,7 +423,7 @@ double make_operation_for_binary(lexeme *a, lexeme *b, lexeme *operation) {
     else if (operation->type == DIV) result = a->value / b->value;
     else if (operation->type == MOD) result = fmod(a->value, b->value);
     else if (operation->type == POW) {
-        printf("\na = %lf b = %lf\n", a->value, b->value);
+        //printf("\na = %lf b = %lf\n", a->value, b->value);
         result = pow(a->value, b->value);
     }
 

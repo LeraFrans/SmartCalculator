@@ -48,5 +48,7 @@ private slots:
 //    void on_pushButton_acos_clicked();
 //    void on_pushButton_asin_clicked();
 //    void on_pushButton_back_clicked();
+    void on_pushButton_Plot_graph_clicked();
+    void on_pushButton_Credit_clicked();
 };
 #endif // MAINWINDOW_H

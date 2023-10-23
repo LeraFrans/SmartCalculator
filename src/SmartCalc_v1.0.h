@@ -58,3 +58,4 @@ void push_in_postfix (lexeme **postfix, lexeme** node);
 double from_postfix_to_result (lexeme *postfix);
 double make_operation_for_binary(lexeme *a, lexeme *b, lexeme *operation);
 double make_operation_for_unary(lexeme *a, lexeme *operation);
+double calculate_y (char *string, double x);
